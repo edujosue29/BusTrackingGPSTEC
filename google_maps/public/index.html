@@ -15,8 +15,8 @@
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&signed_in=true"></script>
+    <!-- signed_in=true permite usuarios loggeados -->
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -25,6 +25,10 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/directives.js"></script>
+
+    <!-- Firebase -->
+    <script src="lib/firebase/firebase.js"></script>
+    
   </head>
 
   <body ng-app="starter" ng-controller="MapCtrl" class="platform-browser platform-cordova platform-webview">
@@ -47,7 +51,7 @@
 
             <div class="w-clearfix actividad_divflex  profile ">
               <!--<img class="imagenesredondas" ng-src="img{{currentUser.photoURL}}" >-->
-              <div class="actividadtexto ng-binding">Hola soy Jesus</div>
+              <div class="actividadtexto ng-binding" ng-click="loadMarkers()">Prueba de GET</div>
             </div>
 
                   

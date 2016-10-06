@@ -15,8 +15,8 @@
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&signed_in=true"></script>
+    <!-- signed_in=true permite usuarios loggeados -->
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -25,18 +25,28 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/directives.js"></script>
+
+    <!-- Firebase -->
+    <script src="lib/firebase/firebase.js"></script>
+    
   </head>
 
   <body ng-app="starter" ng-controller="MapCtrl">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Bus GPS Tracking</h1>
       <div class="buttons">
-        <button class="button icon ion-android-more-vertical" ng-click="openMoreMenu()"></button>
+        <button class="button icon-right ion-navicon" ng-click="openMoreMenu()"></button>
       </div>
+
+      <h1 class="title">Bus GPS Tracking</h1>
+      
     </ion-header-bar>
 
     <ion-content scroll="false">
-      <map on-create="mapCreated(map)" id="map" ></map>
+      <div>
+        <strong>Results</strong>
+      </div>
+      <div id="output"></div>
+      <map on-create="mapCreated(map)" id="map" ></map>      
     </ion-content>
 
      <!-- Menu de opciones del icono derecho Header-->
@@ -44,15 +54,17 @@
       <div class="menu-more"> 
         <ion-list>
           <ion-item class="menu-item" ng-click="pruebaUsuario()">
-
             <div class="w-clearfix actividad_divflex  profile ">
               <!--<img class="imagenesredondas" ng-src="img{{currentUser.photoURL}}" >-->
-              <div class="actividadtexto ng-binding">Hola soy Jesus</div>
+              <div class="actividadtexto ng-binding" ng-click="loadMarkers()">PUSH to FIREBASE</div>
             </div>
-
-                  
-          
           </ion-item>
+
+
+           <ion-item class="menu-item" ng-click="getGoogleDistance()">
+            GET Google Distance
+          </ion-item>   
+
 
           <ion-item class="menu-item" ng-click="modoOffline=!modoOffline">
           Modo Offline
@@ -67,7 +79,7 @@
           </ion-item>
 
           <ion-item class="menu-item" ng-click="logOut()">
-          Cerrar Sesión
+          Acerca de BusGPS Tracking
           </ion-item>   
      
         </ion-list>     
