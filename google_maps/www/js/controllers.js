@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
 
   $scope.mapCreated = function(map) {
     $scope.map = map;
-    $scope.map.setCenter(new google.maps.LatLng(9.860900899999999, -83.9151341)); // Centra el mapa en una posicion inicial
+    $scope.map.setCenter(new google.maps.LatLng(9.856021, -83.913601)); // Centra el mapa en una posicion inicial
     
     var transitLayer = new google.maps.TransitLayer();  //Habilita la capa de trafico
     transitLayer.setMap(map);
@@ -92,14 +92,11 @@ angular.module('starter.controllers', [])
 
   //Recibe:
   $scope.getGoogleDistance = function(){
-    console.log("Getting Google distance...");
+      console.log("Getting Google distance...");
       var bounds = new google.maps.LatLngBounds;
       var markersArray = [];
-
-      var origin1 = {lat: 55.93, lng: -3.118};
-      var origin2 = 'Greenwich, England';
-      var destinationA = 'Stockholm, Sweden';
-      var destinationB = {lat: 50.087, lng: 14.421};
+      var origin1 = 'Estación de Autobuses, Cartago Province, Cartago';
+      var destinationA = 'Parada de buses TEC, C 2, Cartago, Cartago Province';      
 
       var destinationIcon = 'https://chart.googleapis.com/chart?' +
           'chst=d_map_pin_letter&chld=D|FF0000|000000';
@@ -114,8 +111,8 @@ angular.module('starter.controllers', [])
       var service = new google.maps.DistanceMatrixService;
 
       service.getDistanceMatrix({
-        origins: [origin1, origin2],
-        destinations: [destinationA, destinationB],
+        origins: [origin1],
+        destinations: [destinationA],
         travelMode: google.maps.TravelMode.DRIVING,
         unitSystem: google.maps.UnitSystem.METRIC,
         avoidHighways: false,
@@ -126,11 +123,19 @@ angular.module('starter.controllers', [])
           alert('Error was: ' + status);
         } else {
           console.log(response);
+          var estimacion = {
+            "distance:":response.rows[0].elements[0].distance.text,
+            "duration:":response.rows[0].elements[0].duration.text
+          };
+
+          console.log("distance:",estimacion.distance);
+          console.log("duration:",estimacion.duration);
+          //alert("distance: " + estimacion.distance + ", duration: " + estimacion.duration);
           var originList = response.originAddresses;
           var destinationList = response.destinationAddresses;
           var outputDiv = document.getElementById('output');
           outputDiv.innerHTML = '';
-          //deleteMarkers(markersArray);
+          deleteMarkers(markersArray);
 
           var showGeocodedAddressOnMap = function(asDestination) {
             var icon = asDestination ? destinationIcon : originIcon;
@@ -149,18 +154,18 @@ angular.module('starter.controllers', [])
           };
 
 
-          for (var i = 0; i < originList.length; i++) {
-            var results = response.rows[i].elements;
-            geocoder.geocode({'address': originList[i]},
-                showGeocodedAddressOnMap(false));
-            for (var j = 0; j < results.length; j++) {
-              geocoder.geocode({'address': destinationList[j]},
-                  showGeocodedAddressOnMap(true));
-              outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                  ': ' + results[j].distance.text + ' in ' +
-                  results[j].duration.text + '<br>';
+            for (var i = 0; i < originList.length; i++) {
+              var results = response.rows[i].elements;
+              geocoder.geocode({'address': originList[i]},
+                  showGeocodedAddressOnMap(false));
+              for (var j = 0; j < results.length; j++) {
+                geocoder.geocode({'address': destinationList[j]},
+                    showGeocodedAddressOnMap(true));
+                outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
+                    ': ' + results[j].distance.text + ' in ' +
+                    results[j].duration.text + '<br>';
+              }
             }
-          }
         }
 
       });
@@ -176,3 +181,4 @@ angular.module('starter.controllers', [])
 
 
 });
+
