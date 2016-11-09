@@ -1,6 +1,9 @@
 angular.module('starter.controllers', [])
 
 .controller('MapCtrl', function($scope, $ionicLoading, $rootScope, Markers) {
+
+
+
   $scope.moreMenu= "menu-more-hide";
   $scope.modoOffline =true;
 
